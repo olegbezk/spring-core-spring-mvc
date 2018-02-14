@@ -1,41 +1,78 @@
 package guru.springframework.domain;
 
+import guru.springframework.enums.OrderStatus;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Order extends AbstractDomainClass {
 
-    @ManyToOne
-    private Cart cart;
-
     @OneToOne
-    private Product product;
+    private Customer customer;
 
-    private Integer quantity;
+    @Embedded
+    private Address shipToAddress;
 
-    public Cart getCart() {
-        return cart;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order", orphanRemoval = true)
+    private List<OrderDetail> orderDetails = new ArrayList<>();
+
+    private OrderStatus orderStatus;
+    private Date dateShipped;
+
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public Product getProduct() {
-        return product;
+    public Address getShipToAddress() {
+        return shipToAddress;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setShipToAddress(Address shipToAddress) {
+        this.shipToAddress = shipToAddress;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+    public void addToOrderDetails(OrderDetail orderDetail){
+        orderDetail.setOrder(this);
+        orderDetails.add(orderDetail);
+    }
+
+    public void removeOrderDetail(OrderDetail orderDetail){
+        orderDetail.setOrder(null);
+        orderDetails.remove(orderDetail);
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Date getDateShipped() {
+        return dateShipped;
+    }
+
+    public void setDateShipped(Date dateShipped) {
+        this.dateShipped = dateShipped;
     }
 }
