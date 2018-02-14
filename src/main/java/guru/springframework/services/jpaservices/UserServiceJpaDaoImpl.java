@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
-@Profile("jpa_dao")
+@Profile("jpa_dao-dontuse")
 public class UserServiceJpaDaoImpl extends AbstractJpaDaoService implements UserService {
 
     private final EncryptionService encryptionService;

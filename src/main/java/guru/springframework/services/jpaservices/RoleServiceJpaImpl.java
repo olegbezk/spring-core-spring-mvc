@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
-@Profile("jpa_dao")
+@Profile("jpa_dao-dontuse")
 public class RoleServiceJpaImpl extends AbstractJpaDaoService implements RoleService {
 
     @Override
