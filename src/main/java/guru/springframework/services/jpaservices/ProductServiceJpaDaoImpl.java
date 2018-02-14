@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
-@Profile("jpa_dao-dontuse")
+@Profile("jpa_dao")
 public class ProductServiceJpaDaoImpl extends AbstractJpaDaoService implements ProductService {
 
     @Override

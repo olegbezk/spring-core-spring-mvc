@@ -71,6 +71,7 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         roleService.saveOrUpdate(role);
     }
 
+    @SuppressWarnings("unchecked")
     private void loadOrderHistory() {
         List<User> users = (List<User>) userService.listAll();
         List<Product> products = (List<Product>) productService.listAll();
@@ -89,6 +90,7 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         });
     }
 
+    @SuppressWarnings("unchecked")
     private void loadCarts() {
         List<User> users = (List<User>) userService.listAll();
         List<Product> products = (List<Product>) productService.listAll();
@@ -103,7 +105,7 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         });
     }
 
-    public void loadUsersAndCustomers() {
+    private void loadUsersAndCustomers() {
         User user1 = new User();
         user1.setUsername("mweston");
         user1.setPassword("password");
@@ -156,7 +158,7 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         userService.saveOrUpdate(user3);
     }
 
-    public void loadProducts(){
+    private void loadProducts(){
 
         Product product1 = new Product();
         product1.setDescription("Product 1");

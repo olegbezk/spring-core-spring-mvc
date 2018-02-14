@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Profile({"springdatajpa", "jpa_dao"})
+@Profile("springdatajpa")
 public class ProductServiceRepoImpl implements ProductService {
 
     private final ProductRepository productRepository;
