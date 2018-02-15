@@ -17,7 +17,7 @@ public abstract class AbstractDomainClass implements DomainObject {
     Long id;
 
     @Version
-    private Integer version;
+    private Long version;
 
     private Date dateCreated;
 
@@ -33,11 +33,11 @@ public abstract class AbstractDomainClass implements DomainObject {
         this.id = id;
     }
 
-    public Integer getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
