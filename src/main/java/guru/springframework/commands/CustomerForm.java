@@ -1,5 +1,7 @@
 package guru.springframework.commands;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class CustomerForm {
 
     private Long userId;
@@ -10,6 +12,7 @@ public class CustomerForm {
 
     private Long customerVersion;
 
+    @NotEmpty
     private String userName;
 
     private String passwordText;
