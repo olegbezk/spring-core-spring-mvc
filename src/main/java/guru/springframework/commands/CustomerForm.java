@@ -41,7 +41,7 @@ public class CustomerForm {
     private String email;
 
     @NotEmpty
-    @Pattern(regexp="(^$|[0-9]{10})", message = "Should be 10 digits long.")
+    @Pattern(regexp="(^$|[0-9]{10})")
     private String phoneNumber;
 
     public Long getUserId() {
