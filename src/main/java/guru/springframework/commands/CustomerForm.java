@@ -3,6 +3,7 @@ package guru.springframework.commands;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class CustomerForm {
@@ -16,21 +17,31 @@ public class CustomerForm {
     private Long customerVersion;
 
     @NotEmpty
-    @Size(min = 2)
+    @Size(min = 2, max = 75)
     private String userName;
 
+    @NotEmpty
+    @Size(min = 6, max = 20)
     private String passwordText;
 
+    @NotEmpty
+    @Size(min = 6, max = 20)
     private String passwordTextConf;
 
+    @NotEmpty
+    @Size(min = 2, max = 75)
     private String firstName;
 
+    @NotEmpty
+    @Size(min = 2, max = 75)
     private String lastName;
 
     @NotEmpty
     @Email
     private String email;
 
+    @NotEmpty
+    @Pattern(regexp="(^$|[0-9]{10})", message = "Should be 10 digits long.")
     private String phoneNumber;
 
     public Long getUserId() {
