@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Profile("map")
@@ -30,5 +31,21 @@ public class UserServiceMapImpl extends AbstractMapService implements UserServic
     @Override
     public void delete(Long id) {
         super.delete(id);
+    }
+
+    @Override
+    public User findByUserName(final String userName) {
+
+        Optional returnUser = super.listAll().stream()
+                .filter(domainObject -> {
+                    User user = (User) domainObject;
+                    return user.getUsername().equalsIgnoreCase(userName);
+                }).findFirst();
+
+        if (returnUser.isPresent()) {
+            return (User) returnUser.get();
+        } else {
+            return null;
+        }
     }
 }
