@@ -16,11 +16,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Qualifier("daoAuthenticationProvider")
-    private final AuthenticationProvider authenticationProvider;
+    private AuthenticationProvider authenticationProvider;
 
     @Autowired
-    public SpringSecurityConfig(final AuthenticationProvider authenticationProvider) {
+    @Qualifier("daoAuthenticationProvider")
+    public void setAuthenticationProvider(AuthenticationProvider authenticationProvider) {
         this.authenticationProvider = authenticationProvider;
     }
 
@@ -30,7 +30,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(StrongPasswordEncryptor passwordEncryptor){
+    public PasswordEncoder passwordEncoder(StrongPasswordEncryptor passwordEncryptor) {
 
         PasswordEncoder passwordEncoder = new PasswordEncoder();
         passwordEncoder.setPasswordEncryptor(passwordEncryptor);
@@ -40,7 +40,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder,
-                                                               UserDetailsService userDetailsService){
+                                                               UserDetailsService userDetailsService) {
 
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
@@ -51,6 +51,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/").permitAll();
+        http.csrf().ignoringAntMatchers("/h2-console/*").disable()
+                .authorizeRequests().antMatchers("/**/favicon.ico").permitAll()
+                .and().authorizeRequests().antMatchers("/product/**").permitAll()
+                .and().authorizeRequests().antMatchers("/webjars/**").permitAll()
+                .and().authorizeRequests().antMatchers("/static/css").permitAll()
+                .and().authorizeRequests().antMatchers("/js").permitAll()
+                .and().formLogin().loginPage("/login").permitAll()
+                .and().authorizeRequests().antMatchers("/customer/**").authenticated()
+                .and().authorizeRequests().antMatchers("/user/**").authenticated()
+                .and().exceptionHandling().accessDeniedPage("/access_denied")
+                .and().headers().frameOptions().sameOrigin(); // h2 setup for displaying data
     }
 }
