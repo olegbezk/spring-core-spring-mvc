@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Service
+@Service("customerServiceJPADaoImpl")
 @Profile("jpa_dao")
 public class CustomerServiceJPADaoImpl extends AbstractJpaDaoService implements CustomerService {
 

@@ -4,6 +4,7 @@ import guru.springframework.commands.CustomerForm;
 import guru.springframework.converters.CustomerFormToCustomer;
 import guru.springframework.domain.Customer;
 import guru.springframework.repositories.CustomerRepository;
+import guru.springframework.repositories.UserRepository;
 import guru.springframework.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -18,12 +19,16 @@ public class CustomerServiceRepoImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
+    private final UserRepository userRepository;
+
     private final CustomerFormToCustomer customerFormToCustomer;
 
     @Autowired
     public CustomerServiceRepoImpl(final CustomerRepository customerRepository,
+                                   final UserRepository userRepository,
                                    final CustomerFormToCustomer customerFormToCustomer) {
         this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
         this.customerFormToCustomer = customerFormToCustomer;
     }
 
@@ -46,7 +51,12 @@ public class CustomerServiceRepoImpl implements CustomerService {
 
     @Override
     public void delete(final Long id) {
-        customerRepository.delete(id);
+
+        final Customer customer = customerRepository.findOne(id);
+
+        userRepository.delete(customer.getUser());
+
+        customerRepository.delete(customer);
     }
 
     @Override
@@ -54,7 +64,7 @@ public class CustomerServiceRepoImpl implements CustomerService {
 
         Customer newCustomer = customerFormToCustomer.convert(customerForm);
 
-        if(newCustomer.getUser().getId() != null){
+        if (newCustomer.getUser().getId() != null) {
             Customer existingCustomer = getById(newCustomer.getId());
 
             newCustomer.getUser().setEnabled(existingCustomer.getUser().getEnabled());
