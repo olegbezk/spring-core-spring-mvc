@@ -9,24 +9,24 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Component
 public class UserToUserDetails implements Converter<User, UserDetails> {
 
     @Override
     public UserDetails convert(final User user) {
+
         UserDetailsImpl userDetails = new UserDetailsImpl();
-        userDetails.setUsername(user.getUsername());
-        userDetails.setPassword(user.getEncryptedPassword());
-        userDetails.setEnabled(user.getEnabled());
 
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getRole()));
-        });
-
-        userDetails.setAuthorities(authorities);
+        if (user != null) {
+            userDetails.setUsername(user.getUsername());
+            userDetails.setPassword(user.getEncryptedPassword());
+            userDetails.setEnabled(user.getEnabled());
+            userDetails.setAuthorities(user.getRoles().stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getRole()))
+                    .collect(Collectors.toSet()));
+        }
 
         return userDetails;
     }
