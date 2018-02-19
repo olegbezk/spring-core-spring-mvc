@@ -32,11 +32,12 @@ public class LoginFailureEventHandler implements ApplicationListener<LoginFailur
         if (user != null) { // user found
             user.setFailedLoginAttempts(user.getFailedLoginAttempts() + 1);
 
+            System.out.println("Valid username, updating failed attempts");
+
             if (user.getFailedLoginAttempts() > 5) {
                 user.setEnabled(false);
+                System.out.println("### LOCKING USER ACCOUNT!");
             }
-
-            System.out.println("Valid username, updating failed attempts");
 
             userService.saveOrUpdate(user);
 
