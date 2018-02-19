@@ -36,6 +36,16 @@ public class User extends AbstractDomainClass {
     //     inverseJoinColumns = @joinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
 
+    private Integer failedLoginAttempts = 0;
+
+    public Integer getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(final Integer failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
+    }
+
     public String getUsername() {
         return username;
     }
