@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +13,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginAspect {
 
+    private final LoginFailureEventPublisher publisher;
+
+    @Autowired
+    public LoginAspect(final LoginFailureEventPublisher publisher) {
+        this.publisher = publisher;
+    }
+
     @Pointcut("execution(* org.springframework.security.authentication.AuthenticationProvider.authenticate(..))")
     public void doAuthenticate() {
-
+        // setup pointcut
     }
 
     @Before("guru.springframework.services.security.LoginAspect.doAuthenticate() && args(authentication)")
@@ -33,5 +41,7 @@ public class LoginAspect {
     public void logAuthenticationException(Authentication authentication) {
         String userDetails = (String) authentication.getPrincipal();
         System.out.println("Login failed for user: " + userDetails);
+
+        publisher.publish(new LoginFailureEvent(authentication));
     }
 }
