@@ -15,9 +15,13 @@ public class LoginAspect {
 
     private final LoginFailureEventPublisher publisher;
 
+    private final LoginSuccessEventPublisher successEventPublisher;
+
     @Autowired
-    public LoginAspect(final LoginFailureEventPublisher publisher) {
+    public LoginAspect(final LoginFailureEventPublisher publisher,
+                       final LoginSuccessEventPublisher successEventPublisher) {
         this.publisher = publisher;
+        this.successEventPublisher = successEventPublisher;
     }
 
     @Pointcut("execution(* org.springframework.security.authentication.AuthenticationProvider.authenticate(..))")
@@ -35,6 +39,8 @@ public class LoginAspect {
             returning = "authentication")
     public void logAfterAuthenticate(Authentication authentication) {
         System.out.println("This is after the Authenticate Method authentication: " + authentication.isAuthenticated());
+
+        successEventPublisher.publish(new LoginSuccessEvent(authentication));
     }
 
     @AfterThrowing("guru.springframework.services.security.LoginAspect.doAuthenticate() && args(authentication)")

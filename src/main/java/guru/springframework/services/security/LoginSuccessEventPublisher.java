@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoginFailureEventPublisher implements ApplicationEventPublisherAware {
+public class LoginSuccessEventPublisher implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher publisher;
 
@@ -14,7 +14,7 @@ public class LoginFailureEventPublisher implements ApplicationEventPublisherAwar
         this.publisher = applicationEventPublisher;
     }
 
-    public void publish(final LoginFailureEvent loginFailureEvent) {
-        this.publisher.publishEvent(loginFailureEvent);
+    public void publish(final LoginSuccessEvent event) {
+        publisher.publishEvent(event);
     }
 }
