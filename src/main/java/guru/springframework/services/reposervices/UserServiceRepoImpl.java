@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 @Profile("springdatajpa")
 public class UserServiceRepoImpl implements UserService {
 
@@ -56,6 +55,7 @@ public class UserServiceRepoImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delete(final Long id) {
         User user = userRepository.findOne(id);
         customerRepository.delete(user.getCustomer());
