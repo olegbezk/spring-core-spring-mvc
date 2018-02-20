@@ -2,4 +2,4 @@
 
 ## Include: Spring Security, JPA, AOP, Events, Scheduled tasks and JMS support
 
-## Spring Boot auto configuration excluded and added core Spring configuration
+## Spring Boot auto configuration excluded and added Spring core configuration
